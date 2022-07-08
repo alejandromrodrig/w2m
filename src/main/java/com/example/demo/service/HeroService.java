@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.entity.Gender;
 import com.example.demo.entity.Hero;
 import com.example.demo.repository.HeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,20 +28,16 @@ public class HeroService {
     return heroRepository.findByNameContainingIgnoreCase(keywords);
   }
 
+  public List<Hero> searchHeroByKeywords(final String keywords) {
+    return heroRepository.searchHeroByKeywords(keywords);
+  }
+
   public Hero createHero(final Hero hero) {
     return heroRepository.save(hero);
   }
 
   public Hero updateHero(final Hero hero) throws RestClientException {
     return heroRepository.save(hero);
-  }
-
-  public List<Hero> findHeroesByGender(final Gender gender) {
-    return heroRepository.findByGender(gender);
-  }
-
-  public List<Hero> searchHeroesByGender(final Gender gender) {
-    return heroRepository.searchByGender(gender);
   }
 
   public void deleteHero(final Integer id) {

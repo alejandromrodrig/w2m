@@ -2,9 +2,9 @@ package com.example.demo.controller;
 
 import java.util.List;
 
-import com.example.demo.entity.Gender;
 import com.example.demo.entity.Hero;
 import com.example.demo.service.HeroService;
+import com.example.demo.utils.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,44 +25,45 @@ public class HeroController {
   HeroService heroService;
 
   @GetMapping()
+  @Timer
   public List<Hero> getHeroes() {
     return heroService.getAllHeroes();
   }
 
   @GetMapping("/{id}")
+  @Timer
   public Hero getHero(@PathVariable Integer id) {
     Hero hero = heroService.getHeroById(id);
     return hero;
-  }
-
-  @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping
-  public Hero createHero(@RequestBody Hero hero) {
-    return heroService.createHero(hero);
-  }
-
-  @PutMapping()
-  public Hero updateHero(@RequestBody Hero hero) {
-    return heroService.updateHero(hero);
-  }
-
-  @DeleteMapping(value = "/{id}")
-  public void deletePost(@PathVariable("id") Integer id) {
-    heroService.deleteHero(id);
-  }
-
-  @GetMapping(value = "/gender/{gender}")
-  public List<Hero> getHeroesByGender(@PathVariable String gender) {
-    return heroService.findHeroesByGender(Gender.valueOf(gender));
-  }
-
-  @GetMapping(value = "/gender2/{gender}")
-  public List<Hero> searchHeroesByGender(@PathVariable String gender) {
-    return heroService.searchHeroesByGender(Gender.valueOf(gender));
   }
 
   @GetMapping(value = "/name/{keywords}")
   public List<Hero> getHeroesByName(@PathVariable String keywords) {
     return heroService.findHeroByKeywords(keywords);
   }
+
+  @GetMapping(value = "/name2/{keywords}")
+  public List<Hero> searchHeroesByName(@PathVariable String keywords) {
+    return heroService.searchHeroByKeywords(keywords);
+  }
+
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping
+  @Timer
+  public Hero createHero(@RequestBody Hero hero) {
+    return heroService.createHero(hero);
+  }
+
+  @PutMapping()
+  @Timer
+  public Hero updateHero(@RequestBody Hero hero) {
+    return heroService.updateHero(hero);
+  }
+
+  @DeleteMapping(value = "/{id}")
+  @Timer
+  public void deletePost(@PathVariable("id") Integer id) {
+    heroService.deleteHero(id);
+  }
+
 }
