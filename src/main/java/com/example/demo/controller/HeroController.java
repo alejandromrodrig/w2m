@@ -5,6 +5,8 @@ import java.util.List;
 import com.example.demo.entity.Hero;
 import com.example.demo.service.HeroService;
 import com.example.demo.utils.Timer;
+import javax.management.InstanceNotFoundException;
+import javax.xml.bind.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,19 +52,19 @@ public class HeroController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   @Timer
-  public Hero createHero(@RequestBody Hero hero) {
+  public Hero createHero(@RequestBody Hero hero) throws ValidationException {
     return heroService.createHero(hero);
   }
 
   @PutMapping()
   @Timer
-  public Hero updateHero(@RequestBody Hero hero) {
+  public Hero updateHero(@RequestBody Hero hero) throws InstanceNotFoundException {
     return heroService.updateHero(hero);
   }
 
   @DeleteMapping(value = "/{id}")
   @Timer
-  public void deletePost(@PathVariable("id") Integer id) {
+  public void deletePost(@PathVariable("id") Integer id) throws InstanceNotFoundException {
     heroService.deleteHero(id);
   }
 

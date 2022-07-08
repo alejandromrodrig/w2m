@@ -1,10 +1,7 @@
 package com.example.demo.service;
 
-import static java.time.LocalDate.now;
-
-import static com.example.demo.entity.Gender.M;
-import static com.example.demo.entity.Range.A;
-import static com.example.demo.entity.Range.S;
+import static com.example.demo.HeroMother.oneHero;
+import static com.example.demo.HeroMother.someHeroes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.h2.value.Value.UUID;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
@@ -17,6 +14,8 @@ import java.util.Optional;
 
 import com.example.demo.entity.Hero;
 import com.example.demo.repository.HeroRepository;
+import javax.management.InstanceNotFoundException;
+import javax.xml.bind.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -68,11 +67,33 @@ class HeroServiceTest {
   }
 
   @Test
-  void createsHero() {
+  void createsHero() throws ValidationException {
+    givenZeroHerofindByNameContainingIgnoreCase();
+    givenOneHeroSaved(oneHero());
+    final Hero hero = heroService.createHero(oneHero());
+    assertThat(hero.getName()).isEqualTo(oneHero().getName());
   }
 
   @Test
-  void updatesHero() {
+  void createsHeroWithRepeatedNameThrowsException() {
+    givenSomeHeroesFindByName();
+    assertThrows(ValidationException.class, () -> heroService.createHero(oneHero()));
+  }
+
+  @Test
+  void updatesHero() throws InstanceNotFoundException {
+    givenOneHero();
+    final Hero heroUpdated = oneHero();
+    heroUpdated.setNumber("662000000");
+    givenOneHeroSaved(heroUpdated);
+    final Hero hero = heroService.updateHero(heroUpdated);
+    assertThat(hero.getNumber()).isEqualTo(heroUpdated.getNumber());
+  }
+
+  @Test
+  void updatesHeroThatDoNotExistsThrowsException() {
+    givenZeroHero();
+    assertThrows(InstanceNotFoundException.class, () -> heroService.updateHero(oneHero()));
   }
 
   @Test
@@ -80,27 +101,30 @@ class HeroServiceTest {
   }
 
   private void givenOneHero() {
-    final Hero hero = new Hero(1, "Superman", M, now(), "661666666", "Superman returns", S);
-    doReturn(Optional.of(hero)).when(heroRepository).findById(any());
+    doReturn(Optional.of(oneHero())).when(heroRepository).findById(any());
   }
 
   private void givenSomeHeroes() {
-    final Hero superman = new Hero(1, "Superman", M, now(), "661666666", "Superman returns", S);
-    final Hero batman = new Hero(2, "Batman", M, now(), "662666666", "Night", A);
-    doReturn(List.of(superman, batman)).when(heroRepository).findAll();
+    doReturn(someHeroes()).when(heroRepository).findAll();
   }
 
   private void givenSomeHeroesFindByName() {
-    final Hero superman = new Hero(1, "Superman", M, now(), "661666666", "Superman returns", S);
-    final Hero batman = new Hero(2, "Batman", M, now(), "662666666", "Night", A);
-    doReturn(List.of(superman, batman)).when(heroRepository).findByNameContainingIgnoreCase(any());
+    doReturn(someHeroes()).when(heroRepository).findByNameContainingIgnoreCase(any());
+  }
+
+  private void givenZeroHerofindByNameContainingIgnoreCase() {
+    doReturn(List.of()).when(heroRepository).findByNameContainingIgnoreCase(any());
   }
 
   private void givenSomeHeroesSearchHeroByKeywords() {
-    final Hero superman = new Hero(1, "Superman", M, now(), "661666666", "Superman returns", S);
-    final Hero batman = new Hero(2, "Batman", M, now(), "662666666", "Night", A);
-    doReturn(List.of(superman, batman)).when(heroRepository).searchHeroByKeywords(any());
+    doReturn(someHeroes()).when(heroRepository).searchHeroByKeywords(any());
   }
+
+  private void givenOneHeroSaved(final Hero hero) {
+    doReturn(hero).when(heroRepository).save(any());
+  }
+
+  ;
 
   private void givenZeroHero() {
     doReturn(Optional.empty()).when(heroRepository).findById(any());

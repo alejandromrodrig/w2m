@@ -1,15 +1,12 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.example.demo.entity.Hero;
 import com.example.demo.repository.HeroRepository;
+import javax.management.InstanceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class HeroService {
@@ -22,7 +19,11 @@ public class HeroService {
   }
 
   public Hero getHeroById(final Integer id) {
-    return heroRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not found"));
+    try {
+      return heroRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException("Hero not found"));
+    } catch (InstanceNotFoundException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public List<Hero> findHeroByKeywords(final String keywords) {
@@ -36,20 +37,22 @@ public class HeroService {
   public Hero createHero(final Hero hero) {
     final List<Hero> heroes = heroRepository.findByNameContainingIgnoreCase(hero.getName());
     if (!heroes.isEmpty()) {
-      throw (new ResponseStatusException(HttpStatus.NOT_FOUND, "Hero exists"));
+      try {
+        throw (new InstanceNotFoundException("Hero exists"));
+      } catch (InstanceNotFoundException e) {
+        throw new RuntimeException(e);
+      }
     }
     return heroRepository.save(hero);
   }
 
-  public Hero updateHero(final Hero hero) throws RestClientException {
-    final Optional<Hero> heroFound = heroRepository.findById(hero.getId());
-    if (!heroFound.isPresent()) {
-      throw (new ResponseStatusException(HttpStatus.NOT_FOUND, "Hero do not exists"));
-    }
+  public Hero updateHero(final Hero hero) {
+    getHeroById(hero.getId());
     return heroRepository.save(hero);
   }
 
   public void deleteHero(final Integer id) {
+    getHeroById(id);
     heroRepository.deleteById(id);
   }
 }
