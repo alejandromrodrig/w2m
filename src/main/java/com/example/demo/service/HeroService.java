@@ -1,0 +1,48 @@
+package com.example.demo.service;
+
+import java.util.List;
+
+import com.example.demo.entity.Gender;
+import com.example.demo.entity.Hero;
+import com.example.demo.repository.HeroRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.server.ResponseStatusException;
+
+@Service
+public class HeroService {
+
+  @Autowired
+  HeroRepository heroRepository;
+
+  public List<Hero> getAllHeroes() {
+    return heroRepository.findAll();
+  }
+
+  public Hero getHeroById(Integer id) {
+    return heroRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not found"));
+  }
+
+  public Hero createHero(Hero hero) {
+    return heroRepository.save(hero);
+  }
+
+  public Hero updateHero(Hero hero) throws RestClientException {
+    return heroRepository.save(hero);
+  }
+
+  public List<Hero> findHeroesByGender(Gender gender) {
+    return heroRepository.findByGender(gender);
+  }
+
+  public List<Hero> searchHeroesByGender(Gender gender) {
+    return heroRepository.searchByGender(gender);
+  }
+
+  public void deleteHero(Integer id) {
+    heroRepository.deleteById(id);
+  }
+}
+
