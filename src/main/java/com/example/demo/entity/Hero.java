@@ -9,12 +9,16 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Hero implements Serializable {
 
   @Id
@@ -34,9 +38,5 @@ public class Hero implements Serializable {
 
   @Enumerated(EnumType.STRING)
   private Range range;
-
-  public Hero() {
-
-  }
 
 }

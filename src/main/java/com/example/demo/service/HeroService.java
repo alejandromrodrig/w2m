@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.demo.entity.Hero;
 import com.example.demo.repository.HeroRepository;
@@ -33,10 +34,18 @@ public class HeroService {
   }
 
   public Hero createHero(final Hero hero) {
+    final List<Hero> heroes = heroRepository.findByNameContainingIgnoreCase(hero.getName());
+    if (!heroes.isEmpty()) {
+      throw (new ResponseStatusException(HttpStatus.NOT_FOUND, "Hero exists"));
+    }
     return heroRepository.save(hero);
   }
 
   public Hero updateHero(final Hero hero) throws RestClientException {
+    final Optional<Hero> heroFound = heroRepository.findById(hero.getId());
+    if (!heroFound.isPresent()) {
+      throw (new ResponseStatusException(HttpStatus.NOT_FOUND, "Hero do not exists"));
+    }
     return heroRepository.save(hero);
   }
 
