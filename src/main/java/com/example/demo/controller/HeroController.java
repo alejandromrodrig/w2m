@@ -60,4 +60,9 @@ public class HeroController {
   public List<Hero> searchHeroesByGender(@PathVariable String gender) {
     return heroService.searchHeroesByGender(Gender.valueOf(gender));
   }
+
+  @GetMapping(value = "/name/{keywords}")
+  public List<Hero> getHeroesByName(@PathVariable String keywords) {
+    return heroService.findHeroByKeywords(keywords);
+  }
 }

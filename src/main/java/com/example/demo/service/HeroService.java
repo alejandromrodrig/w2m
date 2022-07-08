@@ -21,27 +21,31 @@ public class HeroService {
     return heroRepository.findAll();
   }
 
-  public Hero getHeroById(Integer id) {
+  public Hero getHeroById(final Integer id) {
     return heroRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not found"));
   }
 
-  public Hero createHero(Hero hero) {
+  public List<Hero> findHeroByKeywords(final String keywords) {
+    return heroRepository.findByNameContainingIgnoreCase(keywords);
+  }
+
+  public Hero createHero(final Hero hero) {
     return heroRepository.save(hero);
   }
 
-  public Hero updateHero(Hero hero) throws RestClientException {
+  public Hero updateHero(final Hero hero) throws RestClientException {
     return heroRepository.save(hero);
   }
 
-  public List<Hero> findHeroesByGender(Gender gender) {
+  public List<Hero> findHeroesByGender(final Gender gender) {
     return heroRepository.findByGender(gender);
   }
 
-  public List<Hero> searchHeroesByGender(Gender gender) {
+  public List<Hero> searchHeroesByGender(final Gender gender) {
     return heroRepository.searchByGender(gender);
   }
 
-  public void deleteHero(Integer id) {
+  public void deleteHero(final Integer id) {
     heroRepository.deleteById(id);
   }
 }

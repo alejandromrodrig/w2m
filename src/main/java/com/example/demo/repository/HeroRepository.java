@@ -9,9 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface HeroRepository extends JpaRepository<Hero, Integer> {
 
-  public List<Hero> findByGender(Gender gender);
+  List<Hero> findByGender(Gender gender);
 
   @Query("select e from Hero e where e.gender = 'M'")
-  public List<Hero> searchByGender(Gender gender);
+  List<Hero> searchByGender(Gender gender);
+
+  List<Hero> findByNameContainingIgnoreCase(String keywords);
 
 }
