@@ -7,11 +7,9 @@ import com.example.demo.repository.HeroRepository;
 import com.example.demo.service.HeroService;
 import javax.management.InstanceNotFoundException;
 import javax.xml.bind.ValidationException;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Log4j2
 @Service
 public class HeroServiceImpl implements HeroService {
 
@@ -54,9 +52,16 @@ public class HeroServiceImpl implements HeroService {
   }
 
   @Override
-  public void deleteHero(final Integer id) throws InstanceNotFoundException {
+  public void deleteHeroById(final Integer id) throws InstanceNotFoundException {
     getHeroById(id);
     heroRepository.deleteById(id);
+  }
+
+  @Override
+  public void deleteHeroByName(final String keywords) throws InstanceNotFoundException {
+    final Hero hero = findHeroByKeywords(keywords).stream()
+        .findFirst().orElseThrow(() -> new InstanceNotFoundException("Hero not found"));
+    heroRepository.deleteById(hero.getId());
   }
 }
 

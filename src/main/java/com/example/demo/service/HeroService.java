@@ -10,16 +10,18 @@ public interface HeroService {
 
   List<Hero> getAllHeroes();
 
-  Hero getHeroById(final Integer id) throws InstanceNotFoundException;
+  Hero getHeroById(Integer id) throws InstanceNotFoundException;
 
-  List<Hero> findHeroByKeywords(final String keywords);
+  List<Hero> findHeroByKeywords(String keywords);
 
-  List<Hero> searchHeroByKeywords(final String keywords);
+  List<Hero> searchHeroByKeywords(String keywords);
 
-  Hero createHero(final Hero hero) throws ValidationException;
+  Hero createHero(Hero hero) throws ValidationException;
 
-  Hero updateHero(final Hero hero) throws InstanceNotFoundException;
+  Hero updateHero(Hero hero) throws InstanceNotFoundException;
 
-  void deleteHero(final Integer id) throws InstanceNotFoundException;
+  void deleteHeroById(Integer id) throws InstanceNotFoundException;
+
+  void deleteHeroByName(String keywords) throws InstanceNotFoundException;
 }
 

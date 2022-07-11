@@ -100,13 +100,19 @@ class HeroServiceTest {
   @Test
   void deletesHeroThatDoNotExistsThrowsException() {
     givenZeroHero();
-    assertThrows(InstanceNotFoundException.class, () -> heroServiceImpl.deleteHero(oneHero().getId()));
+    assertThrows(InstanceNotFoundException.class, () -> heroServiceImpl.deleteHeroById(oneHero().getId()));
   }
 
   @Test
-  void deletesHero() {
+  void deletesHeroById() {
     givenOneHero();
-    assertDoesNotThrow(() -> heroServiceImpl.deleteHero(oneHero().getId()));
+    assertDoesNotThrow(() -> heroServiceImpl.deleteHeroById(oneHero().getId()));
+  }
+
+  @Test
+  void deletesHeroByName() {
+    givenSomeHeroesFindByName();
+    assertDoesNotThrow(() -> heroServiceImpl.deleteHeroByName(oneHero().getName()));
   }
 
   private void givenOneHero() {

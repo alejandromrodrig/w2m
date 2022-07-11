@@ -39,4 +39,13 @@ public class Hero implements Serializable {
   @Enumerated(EnumType.STRING)
   private Range range;
 
+  public Hero(final String name, final Gender gender, final LocalDate birth_date, final String number, final String description,
+      final Range range) {
+    this.name = name;
+    this.gender = gender;
+    this.birth_date = birth_date;
+    this.number = number;
+    this.description = description;
+    this.range = range;
+  }
 }

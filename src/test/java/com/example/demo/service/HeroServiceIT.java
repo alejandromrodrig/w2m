@@ -29,9 +29,9 @@ public class HeroServiceIT {
   @Transactional
   public void createUserTest() throws ValidationException {
     assertEquals(8, heroRepository.count());
-    Hero newHero = new Hero(1, "Hulk", M, LocalDate.of(1980, 11, 8), "665111111", "", A);
-    Hero hero = heroService.createHero(newHero);
-    Optional<Hero> heroFromDB = heroRepository.findById(newHero.getId());
+    final Hero newHero = new Hero("Hulk", M, LocalDate.of(1980, 11, 8), "665111111", "", A);
+    final Hero hero = heroService.createHero(newHero);
+    final Optional<Hero> heroFromDB = heroRepository.findById(hero.getId());
     assertTrue(heroFromDB.isPresent());
     assertEquals(hero.getName(), heroFromDB.get().getName());
   }
@@ -40,7 +40,7 @@ public class HeroServiceIT {
   @Transactional
   public void findByIdTest() {
     final int id = 101;
-    Hero hero = heroRepository.findById(id).get();
+    final Hero hero = heroRepository.findById(id).get();
     assertEquals("Superman", hero.getName());
   }
 

@@ -2,8 +2,6 @@ ALTER SEQUENCE hibernate_sequence RESTART WITH 1;
 
 DELETE FROM HERO;
 
-ALTER SEQUENCE hibernate_sequence RESTART WITH 1;
-
 INSERT INTO HERO(id,name,gender,birth_date,number, description, range) VALUES(100,'Spiderman','M','1990-12-07','633719666','Spiderman - 2000', 'A');
 INSERT INTO HERO(id,name,gender,birth_date,number, description, range) VALUES(101,'Superman','M','1989-07-11','785873275','Superman', 'S');
 INSERT INTO HERO(id,name,gender,birth_date,number, description, range) VALUES(102,'Manolito el fuerte','M','1992-10-01','607804892','Amateur', 'C');
