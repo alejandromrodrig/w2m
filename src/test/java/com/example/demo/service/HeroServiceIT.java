@@ -5,7 +5,6 @@ import static com.example.demo.entity.Range.A;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import com.example.demo.entity.Hero;
@@ -29,7 +28,7 @@ public class HeroServiceIT {
   @Transactional
   public void createUserTest() throws ValidationException {
     assertEquals(8, heroRepository.count());
-    final Hero newHero = new Hero("Hulk", M, LocalDate.of(1980, 11, 8), "665111111", "", A);
+    final Hero newHero = new Hero("Hulk", M, "665111111", "", A);
     final Hero hero = heroService.createHero(newHero);
     final Optional<Hero> heroFromDB = heroRepository.findById(hero.getId());
     assertTrue(heroFromDB.isPresent());

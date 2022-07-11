@@ -70,7 +70,7 @@ public class HeroController {
     heroService.deleteHeroById(id);
   }
 
-  @DeleteMapping(value = "/{keywords}")
+  @DeleteMapping(value = "/name/{keywords}")
   @Timer
   public void deletePost(@PathVariable String keywords) throws InstanceNotFoundException {
     heroService.deleteHeroByName(keywords);

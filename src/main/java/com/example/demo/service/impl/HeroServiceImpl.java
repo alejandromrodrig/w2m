@@ -43,9 +43,7 @@ public class HeroServiceImpl implements HeroService {
     return heroRepository.searchHeroByKeywords(keywords);
   }
 
-  @Caching(evict = {@CacheEvict(value = "allheroescache", allEntries = true),
-      @CacheEvict(value = "herocache", key = "#hero.id")
-  })
+  @Caching(evict = {@CacheEvict(value = "allheroescache", allEntries = true)})
   @Override
   public Hero createHero(final Hero hero) throws ValidationException {
     final List<Hero> heroes = heroRepository.findByNameContainingIgnoreCase(hero.getName());
@@ -55,18 +53,21 @@ public class HeroServiceImpl implements HeroService {
     return heroRepository.save(hero);
   }
 
+  @Caching(evict = {@CacheEvict(value = "allheroescache", allEntries = true)})
   @Override
   public Hero updateHero(final Hero hero) throws InstanceNotFoundException {
     getHeroById(hero.getId());
     return heroRepository.save(hero);
   }
 
+  @Caching(evict = {@CacheEvict(value = "allheroescache", allEntries = true)})
   @Override
   public void deleteHeroById(final Integer id) throws InstanceNotFoundException {
     getHeroById(id);
     heroRepository.deleteById(id);
   }
 
+  @Caching(evict = {@CacheEvict(value = "allheroescache", allEntries = true)})
   @Override
   public void deleteHeroByName(final String keywords) throws InstanceNotFoundException {
     final Hero hero = findHeroByKeywords(keywords).stream()
