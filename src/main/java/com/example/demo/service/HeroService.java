@@ -3,57 +3,23 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.entity.Hero;
-import com.example.demo.repository.HeroRepository;
 import javax.management.InstanceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.xml.bind.ValidationException;
 
-@Service
-public class HeroService {
+public interface HeroService {
 
-  @Autowired
-  HeroRepository heroRepository;
+  List<Hero> getAllHeroes();
 
-  public List<Hero> getAllHeroes() {
-    return heroRepository.findAll();
-  }
+  Hero getHeroById(final Integer id) throws InstanceNotFoundException;
 
-  public Hero getHeroById(final Integer id) {
-    try {
-      return heroRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException("Hero not found"));
-    } catch (InstanceNotFoundException e) {
-      throw new RuntimeException(e);
-    }
-  }
+  List<Hero> findHeroByKeywords(final String keywords);
 
-  public List<Hero> findHeroByKeywords(final String keywords) {
-    return heroRepository.findByNameContainingIgnoreCase(keywords);
-  }
+  List<Hero> searchHeroByKeywords(final String keywords);
 
-  public List<Hero> searchHeroByKeywords(final String keywords) {
-    return heroRepository.searchHeroByKeywords(keywords);
-  }
+  Hero createHero(final Hero hero) throws ValidationException;
 
-  public Hero createHero(final Hero hero) {
-    final List<Hero> heroes = heroRepository.findByNameContainingIgnoreCase(hero.getName());
-    if (!heroes.isEmpty()) {
-      try {
-        throw (new InstanceNotFoundException("Hero exists"));
-      } catch (InstanceNotFoundException e) {
-        throw new RuntimeException(e);
-      }
-    }
-    return heroRepository.save(hero);
-  }
+  Hero updateHero(final Hero hero) throws InstanceNotFoundException;
 
-  public Hero updateHero(final Hero hero) {
-    getHeroById(hero.getId());
-    return heroRepository.save(hero);
-  }
-
-  public void deleteHero(final Integer id) {
-    getHeroById(id);
-    heroRepository.deleteById(id);
-  }
+  void deleteHero(final Integer id) throws InstanceNotFoundException;
 }
 

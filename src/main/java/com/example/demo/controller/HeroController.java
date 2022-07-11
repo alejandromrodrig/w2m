@@ -34,7 +34,7 @@ public class HeroController {
 
   @GetMapping("/{id}")
   @Timer
-  public Hero getHero(@PathVariable Integer id) {
+  public Hero getHero(@PathVariable Integer id) throws InstanceNotFoundException {
     Hero hero = heroService.getHeroById(id);
     return hero;
   }
