@@ -8,19 +8,26 @@ import com.example.demo.service.HeroService;
 import javax.management.InstanceNotFoundException;
 import javax.xml.bind.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
+@CacheConfig(cacheNames = "hero")
 @Service
 public class HeroServiceImpl implements HeroService {
 
   @Autowired
   HeroRepository heroRepository;
 
+  @Cacheable(value = "allheroescache")
   @Override
   public List<Hero> getAllHeroes() {
     return heroRepository.findAll();
   }
 
+  @Cacheable(value = "herocache", key = "#id")
   @Override
   public Hero getHeroById(final Integer id) throws InstanceNotFoundException {
     return heroRepository.findById(id).orElseThrow(() -> new InstanceNotFoundException("Hero not found"));
@@ -36,6 +43,9 @@ public class HeroServiceImpl implements HeroService {
     return heroRepository.searchHeroByKeywords(keywords);
   }
 
+  @Caching(evict = {@CacheEvict(value = "allheroescache", allEntries = true),
+      @CacheEvict(value = "herocache", key = "#hero.id")
+  })
   @Override
   public Hero createHero(final Hero hero) throws ValidationException {
     final List<Hero> heroes = heroRepository.findByNameContainingIgnoreCase(hero.getName());
