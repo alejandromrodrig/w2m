@@ -1,6 +1,6 @@
 package com.example.demo.entity;
 
-public enum Range {
+public enum Category {
   S,
   A,
   B,

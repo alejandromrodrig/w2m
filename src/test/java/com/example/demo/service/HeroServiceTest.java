@@ -85,10 +85,10 @@ class HeroServiceTest {
   void updatesHero() throws InstanceNotFoundException {
     givenOneHero();
     final Hero heroUpdated = oneHero();
-    heroUpdated.setNumber("662000000");
+    heroUpdated.setTelephone("662000000");
     givenOneHeroSaved(heroUpdated);
     final Hero hero = heroServiceImpl.updateHero(heroUpdated);
-    assertThat(hero.getNumber()).isEqualTo(heroUpdated.getNumber());
+    assertThat(hero.getTelephone()).isEqualTo(heroUpdated.getTelephone());
   }
 
   @Test

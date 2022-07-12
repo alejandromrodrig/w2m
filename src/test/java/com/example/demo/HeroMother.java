@@ -1,8 +1,8 @@
 package com.example.demo;
 
+import static com.example.demo.entity.Category.A;
+import static com.example.demo.entity.Category.S;
 import static com.example.demo.entity.Gender.M;
-import static com.example.demo.entity.Range.A;
-import static com.example.demo.entity.Range.S;
 
 import java.util.List;
 

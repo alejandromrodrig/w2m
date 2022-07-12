@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
+import static com.example.demo.entity.Category.A;
 import static com.example.demo.entity.Gender.M;
-import static com.example.demo.entity.Range.A;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
