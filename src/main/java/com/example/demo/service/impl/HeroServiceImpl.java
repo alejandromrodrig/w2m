@@ -56,8 +56,20 @@ public class HeroServiceImpl implements HeroService {
   @Caching(evict = {@CacheEvict(value = "allheroescache", allEntries = true)})
   @Override
   public Hero updateHero(final Hero hero) throws InstanceNotFoundException {
-    getHeroById(hero.getId());
-    return heroRepository.save(hero);
+    final Hero oldHero = searchHeroByKeywords(hero.getName()).stream().findFirst().get();
+    Hero newHero;
+    if (hero.getId() != 0 && oldHero.getId().equals(hero.getId())) {
+      newHero = getHeroById(oldHero.getId());
+    } else {
+      newHero = searchHeroByKeywords(hero.getName()).stream().findFirst().get();
+    }
+    newHero.setTelephone(oldHero.getTelephone());
+    newHero.setCategory(oldHero.getCategory());
+    newHero.setDescription(oldHero.getDescription());
+    newHero.setGender(oldHero.getGender());
+    newHero.setId(oldHero.getId());
+    newHero.setName(oldHero.getName());
+    return heroRepository.save(newHero);
   }
 
   @Caching(evict = {@CacheEvict(value = "allheroescache", allEntries = true)})

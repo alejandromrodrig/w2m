@@ -1,7 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.entity.Category;
-import com.example.demo.entity.Gender;
 import com.sun.istack.NotNull;
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -23,7 +21,7 @@ public class HeroDTO {
   private String name;
 
   @NotNull
-  private Gender gender;
+  private GenderDTO gender;
 
   @NotNull
   private String telephone;
@@ -31,6 +29,6 @@ public class HeroDTO {
   private String description;
 
   @NotNull
-  private Category category;
+  private CategoryDTO category;
 
 }
