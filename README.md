@@ -71,8 +71,13 @@ Flyway has been implemented. Files are stored in db/migration.
 #### Is API Dock?
 
 For use it like docker API you should use next command:
-
+(JAVA 11 required)
 ```bash
+mvn clean package
+java -jar ./target/demo-0.0.1-SNAPSHOT.jar
+
+docker build -t herodemo .
+
 docker run -p 8080 herodemo
 ```
 
