@@ -7,6 +7,7 @@ import com.example.demo.model.HeroDTO;
 import com.example.demo.service.HeroService;
 import com.example.demo.util.DTO;
 import com.example.demo.util.Timer;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import javax.management.InstanceNotFoundException;
 import javax.xml.bind.ValidationException;
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@SecurityRequirement(name = "admin")
 @RequestMapping("/hero")
 public class HeroController {
 
