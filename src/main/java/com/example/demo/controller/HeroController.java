@@ -3,10 +3,14 @@ package com.example.demo.controller;
 import java.util.List;
 
 import com.example.demo.entity.Hero;
+import com.example.demo.model.HeroDTO;
 import com.example.demo.service.HeroService;
-import com.example.demo.utils.Timer;
+import com.example.demo.util.DTO;
+import com.example.demo.util.Timer;
 import javax.management.InstanceNotFoundException;
 import javax.xml.bind.ValidationException;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,52 +29,58 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/hero")
 public class HeroController {
 
+  ModelMapper modelMapper = new ModelMapper();
+
   @Autowired
   HeroService heroService;
 
   @GetMapping()
   @Timer
-  public List<Hero> getHeroes() {
-    return heroService.getAllHeroes();
+  public List<HeroDTO> getHeroes() {
+    return modelMapper.map(heroService.getAllHeroes(), new TypeToken<List<HeroDTO>>() {
+    }.getType());
   }
 
   @GetMapping("/{id}")
   @Timer
-  public Hero getHero(@PathVariable Integer id) throws InstanceNotFoundException {
-    Hero hero = heroService.getHeroById(id);
-    return hero;
+  public HeroDTO getHero(@PathVariable Integer id) throws InstanceNotFoundException {
+    return modelMapper.map(heroService.getHeroById(id), HeroDTO.class);
   }
 
   @GetMapping(value = "/name/{keywords}")
-  public List<Hero> getHeroesByName(@PathVariable String keywords) {
-    return heroService.findHeroByKeywords(keywords);
+  public List<HeroDTO> getHeroesByName(@PathVariable String keywords) {
+    return modelMapper.map(heroService.findHeroByKeywords(keywords), new TypeToken<List<HeroDTO>>() {
+    }.getType());
   }
 
   @GetMapping(value = "/name2/{keywords}")
-  public List<Hero> searchHeroesByName(@PathVariable String keywords) {
-    return heroService.searchHeroByKeywords(keywords);
+  public List<HeroDTO> searchHeroesByName(@PathVariable String keywords) {
+    return modelMapper.map(heroService.searchHeroByKeywords(keywords), new TypeToken<List<HeroDTO>>() {
+    }.getType());
   }
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   @Timer
-  public Hero createHero(@RequestBody Hero hero) throws ValidationException {
-    return heroService.createHero(hero);
+  public HeroDTO createHero(@RequestBody @DTO(HeroDTO.class) Hero hero) throws ValidationException {
+    return modelMapper.map(heroService.createHero(hero), HeroDTO.class);
   }
 
   @PutMapping()
   @Timer
-  public Hero updateHero(@RequestBody Hero hero) throws InstanceNotFoundException {
-    return heroService.updateHero(hero);
+  public HeroDTO updateHero(@RequestBody @DTO(HeroDTO.class) Hero hero) throws InstanceNotFoundException {
+    return modelMapper.map(heroService.updateHero(hero), HeroDTO.class);
   }
 
   @DeleteMapping(value = "/{id}")
+  @ResponseStatus(HttpStatus.OK)
   @Timer
   public void deletePost(@PathVariable("id") Integer id) throws InstanceNotFoundException {
     heroService.deleteHeroById(id);
   }
 
   @DeleteMapping(value = "/name/{keywords}")
+  @ResponseStatus(HttpStatus.OK)
   @Timer
   public void deletePost(@PathVariable String keywords) throws InstanceNotFoundException {
     heroService.deleteHeroByName(keywords);

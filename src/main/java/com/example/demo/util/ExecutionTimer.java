@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @ConditionalOnExpression("${aspect.enabled:true}")
 public class ExecutionTimer {
 
-  @Around("@annotation(com.example.demo.utils.Timer)")
+  @Around("@annotation(com.example.demo.util.Timer)")
   public Object executionTime(ProceedingJoinPoint point) throws Throwable {
     long startTime = System.currentTimeMillis();
     Object object = point.proceed();
