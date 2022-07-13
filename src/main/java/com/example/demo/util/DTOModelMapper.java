@@ -7,9 +7,9 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.istack.NotNull;
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
