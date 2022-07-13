@@ -7,4 +7,4 @@ public enum Category {
   C,
   D,
   E
-};
+}

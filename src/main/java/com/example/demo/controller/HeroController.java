@@ -64,14 +64,16 @@ public class HeroController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   @Timer
-  public HeroDTO createHero(@RequestBody @DTO(HeroDTO.class) Hero hero) throws ValidationException {
-    return modelMapper.map(heroService.createHero(hero), HeroDTO.class);
+  public HeroDTO createHero(@RequestBody @DTO(HeroDTO.class) HeroDTO heroDTO) throws ValidationException {
+    return modelMapper.map(heroService
+        .createHero(modelMapper.map(heroDTO, Hero.class)), HeroDTO.class);
   }
 
   @PutMapping()
   @Timer
-  public HeroDTO updateHero(@RequestBody @DTO(HeroDTO.class) Hero hero) throws InstanceNotFoundException {
-    return modelMapper.map(heroService.updateHero(hero), HeroDTO.class);
+  public HeroDTO updateHero(@RequestBody @DTO(HeroDTO.class) HeroDTO heroDTO) throws InstanceNotFoundException {
+    return modelMapper.map(heroService
+        .updateHero(modelMapper.map(heroDTO, Hero.class)), HeroDTO.class);
   }
 
   @DeleteMapping(value = "/{id}")

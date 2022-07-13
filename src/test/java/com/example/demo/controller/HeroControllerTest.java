@@ -75,7 +75,7 @@ class HeroControllerTest {
   }
 
   @Test
-  public void getsAHeroById() {
+  void getsAHeroById() {
     final Hero heroResponse = restTemplate.getForObject(baseUrl.concat("/{id}"), Hero.class, 1);
     assertAll(
         () -> assertNotNull(heroResponse),
@@ -84,7 +84,7 @@ class HeroControllerTest {
   }
 
   @Test
-  public void findsAHeroByName() {
+  void findsAHeroByName() {
     final List<Hero> heroResponse = restTemplate.getForObject(baseUrl.concat("/name/{keywords}"), List.class, "Man");
     assertAll(
         () -> assertNotNull(heroResponse),
@@ -93,7 +93,7 @@ class HeroControllerTest {
   }
 
   @Test
-  public void createsAHero() {
+  void createsAHero() {
     final Hero hero = new Hero("Capitan Garfio", M, "662500221", "Capitan", C);
     final HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -107,7 +107,7 @@ class HeroControllerTest {
   }
 
   @Test
-  public void updatesAHero() {
+  void updatesAHero() {
     final Hero hero = restTemplate.getForObject(baseUrl.concat("/{id}"), Hero.class, 1);
     hero.setName("Nuevo Heroe");
     final HttpEntity<Hero> entity = new HttpEntity<Hero>(hero);
@@ -120,7 +120,7 @@ class HeroControllerTest {
   }
 
   @Test
-  public void deletesAHeroById() {
+  void deletesAHeroById() {
     final Map<String, String> params = new HashMap<String, String>();
     params.put("id", "1");
     restTemplate.delete(baseUrl.concat("/{id}"), params);

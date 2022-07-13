@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
+import static com.example.demo.HeroMother.ONE_ID;
 import static com.example.demo.HeroMother.oneHero;
 import static com.example.demo.HeroMother.someHeroes;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.h2.value.Value.UUID;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,34 +37,36 @@ class HeroServiceTest {
   void getsAllHeroes() {
     givenSomeHeroes();
     final List<Hero> heroes = heroServiceImpl.getAllHeroes();
-    assertThat(heroes.size()).isEqualTo(2);
+    assertThat(heroes).hasSize(2);
   }
 
   @Test
   void getsHeroById() throws InstanceNotFoundException {
     givenOneHero();
-    final Hero hero = heroServiceImpl.getHeroById(UUID);
+    final Hero hero = heroServiceImpl.getHeroById(ONE_ID);
     assertThat(hero.getName()).isEqualTo("Superman");
   }
 
   @Test
   void throwsExceptionWhenHeroIsNotFound() {
     givenZeroHero();
-    assertThrows(InstanceNotFoundException.class, () -> heroServiceImpl.getHeroById(UUID));
+    assertThrows(InstanceNotFoundException.class, () -> heroServiceImpl.getHeroById(ONE_ID));
   }
 
   @Test
   void findsHeroByKeywords() {
     givenSomeHeroesFindByName();
-    final List<Hero> hero = heroServiceImpl.findHeroByKeywords("man");
-    assertThat(isNotEmpty(hero));
+    final List<Hero> heroes = heroServiceImpl.findHeroByKeywords("man");
+    assertThat(isNotEmpty(heroes));
+    assertThat(heroes).hasSize(2);
   }
 
   @Test
   void searchesHeroByKeywords() {
     givenSomeHeroesSearchHeroByKeywords();
-    final List<Hero> hero = heroServiceImpl.searchHeroByKeywords("Man");
-    assertThat(isNotEmpty(hero));
+    final List<Hero> heroes = heroServiceImpl.searchHeroByKeywords("Man");
+    assertThat(isNotEmpty(heroes));
+    assertThat(heroes).hasSize(2);
   }
 
   @Test

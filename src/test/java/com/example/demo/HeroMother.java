@@ -10,7 +10,7 @@ import com.example.demo.entity.Hero;
 
 public class HeroMother {
 
-  public static String UUID = "UUID_RANDOM_1";
+  public static Integer ONE_ID = 1;
 
   public static Hero oneHero() {
     return new Hero("Superman", M, "661666666", "Superman returns", S);

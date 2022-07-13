@@ -16,14 +16,14 @@ import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class HeroRepositoryTest {
+class HeroRepositoryTest {
 
   @Autowired
   private HeroRepository heroRepository;
 
   @Test
   @Transactional
-  public void createsHero() {
+  void createsHero() {
     final Hero newHero = new Hero("Hulk", M, "665111111", "", A);
     final Hero hero = heroRepository.save(newHero);
     final Optional<Hero> heroFromDB = heroRepository.findById(hero.getId());
@@ -33,7 +33,7 @@ public class HeroRepositoryTest {
 
   @Test
   @Transactional
-  public void findsHeroById() {
+  void findsHeroById() {
     final int id = 1;
     final Hero hero = heroRepository.findById(id).get();
     assertEquals("Spiderman", hero.getName());
@@ -41,7 +41,7 @@ public class HeroRepositoryTest {
 
   @Test
   @Transactional
-  public void updatesHero() {
+  void updatesHero() {
     final int id = 1;
     final Hero hero = heroRepository.findById(id).get();
     hero.setName("Peter Parker");
@@ -52,7 +52,7 @@ public class HeroRepositoryTest {
 
   @Test
   @Transactional
-  public void deletesHeroById() {
+  void deletesHeroById() {
     final int id = 1;
     heroRepository.deleteById(id);
     assertThrows(JpaObjectRetrievalFailureException.class, () -> heroRepository.getById(id));
@@ -60,7 +60,7 @@ public class HeroRepositoryTest {
 
   @Test
   @Transactional
-  public void findsAllHeroes() {
+  void findsAllHeroes() {
     assertEquals(8, heroRepository.findAll().size());
   }
 }
