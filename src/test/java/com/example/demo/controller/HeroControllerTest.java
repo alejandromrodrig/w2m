@@ -5,11 +5,8 @@ import static com.example.demo.entity.Gender.M;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.example.demo.entity.Hero;
 import org.apache.http.auth.AuthScope;
@@ -29,7 +26,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -88,7 +84,7 @@ class HeroControllerTest {
     final List<Hero> heroResponse = restTemplate.getForObject(baseUrl.concat("/name/{keywords}"), List.class, "Man");
     assertAll(
         () -> assertNotNull(heroResponse),
-        () -> assertEquals(4, heroResponse.size())
+        () -> assertEquals(3, heroResponse.size())
     );
   }
 
@@ -119,12 +115,4 @@ class HeroControllerTest {
         () -> assertEquals("Nuevo Heroe", heroUpdated.getName()));
   }
 
-  @Test
-  void deletesAHeroById() {
-    final Map<String, String> params = new HashMap<String, String>();
-    params.put("id", "1");
-    restTemplate.delete(baseUrl.concat("/{id}"), params);
-    assertThrows(HttpClientErrorException.class, () -> restTemplate.getForObject(baseUrl.concat("/{id}"), Hero.class, 1));
-
-  }
 }
