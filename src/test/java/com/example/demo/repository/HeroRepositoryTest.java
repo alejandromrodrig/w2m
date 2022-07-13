@@ -23,6 +23,12 @@ class HeroRepositoryTest {
 
   @Test
   @Transactional
+  void findsAllHeroes() {
+    assertEquals(9, heroRepository.findAll().size());
+  }
+
+  @Test
+  @Transactional
   void createsHero() {
     final Hero newHero = new Hero("Hulk", M, "665111111", "", A);
     final Hero hero = heroRepository.save(newHero);
@@ -36,7 +42,7 @@ class HeroRepositoryTest {
   void findsHeroById() {
     final int id = 1;
     final Hero hero = heroRepository.findById(id).get();
-    assertEquals("Spiderman", hero.getName());
+    assertEquals("Nuevo Heroe", hero.getName());
   }
 
   @Test
@@ -58,9 +64,4 @@ class HeroRepositoryTest {
     assertThrows(JpaObjectRetrievalFailureException.class, () -> heroRepository.getById(id));
   }
 
-  @Test
-  @Transactional
-  void findsAllHeroes() {
-    assertEquals(8, heroRepository.findAll().size());
-  }
 }
