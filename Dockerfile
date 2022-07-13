@@ -1,5 +1,11 @@
-FROM adoptopenjdk/openjdk11:alpine-jre
-ARG JAR_FILE=*.jar
-COPY ${JAR_FILE} application.jar
+FROM adoptopenjdk/openjdk11:latest
+
+WORKDIR /app
+ 
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+ 
+COPY src ./src
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "application.jar"]
+CMD ["./mvnw", "spring-boot:run"]

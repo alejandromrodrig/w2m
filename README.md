@@ -75,7 +75,7 @@ For use it like docker API you should use next command:
 ```bash
 docker build -t app .
 
-docker run -p 8080 app
+docker run -p 8080:8080 app
 ```
 
 #### Has any cache?
