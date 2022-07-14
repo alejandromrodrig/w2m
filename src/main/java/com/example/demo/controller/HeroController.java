@@ -108,4 +108,13 @@ public class HeroController {
         .body(exception.getMessage());
   }
 
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<String> handleGenericException(
+      ValidationException exception
+  ) {
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(exception.getMessage());
+  }
+
 }
