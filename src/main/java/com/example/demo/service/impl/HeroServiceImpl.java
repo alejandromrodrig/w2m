@@ -1,8 +1,8 @@
 package com.example.demo.service.impl;
 
-import static com.example.demo.config.cache.CacheConfiguration.ALL_HEROES_CACHE;
-import static com.example.demo.config.cache.CacheConfiguration.HERO_CACHE;
-import static com.example.demo.config.cache.CacheConfiguration.HERO_NAME_CACHE;
+import static com.example.demo.config.cache.CacheNames.ALL_HEROES_CACHE;
+import static com.example.demo.config.cache.CacheNames.HERO_CACHE;
+import static com.example.demo.config.cache.CacheNames.HERO_NAME_CACHE;
 
 import java.util.List;
 
