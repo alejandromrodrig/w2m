@@ -1,7 +1,6 @@
 package com.example.demo.repository;
 
 import static com.example.demo.HeroMother.ONE_HERO_NAME;
-import static com.example.demo.HeroMother.anotherHero;
 import static com.example.demo.HeroMother.otherHero;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -43,7 +42,7 @@ class HeroRepositoryTest {
   void findsHeroById() {
     final int id = 1;
     final Hero hero = heroRepository.findById(id).get();
-    assertEquals(anotherHero().getName(), hero.getName());
+    assertEquals(ONE_HERO_NAME, hero.getName());
   }
 
   @Test
