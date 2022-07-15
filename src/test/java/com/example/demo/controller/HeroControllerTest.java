@@ -1,7 +1,15 @@
 package com.example.demo.controller;
 
-import static com.example.demo.entity.Category.C;
-import static com.example.demo.entity.Gender.M;
+import static com.example.demo.ConfigMother.ID_ENDPOINT;
+import static com.example.demo.ConfigMother.NAME_ENDPOINT;
+import static com.example.demo.ConfigMother.ONE_BASE_URL;
+import static com.example.demo.ConfigMother.ONE_HERO_ENDPOINT;
+import static com.example.demo.ConfigMother.PWD_DATA;
+import static com.example.demo.ConfigMother.USER_DATA;
+import static com.example.demo.HeroMother.ONE_HERO_NAME;
+import static com.example.demo.HeroMother.ONE_KEYWORD;
+import static com.example.demo.HeroMother.anotherHero;
+import static com.example.demo.HeroMother.otherHero;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,7 +42,7 @@ class HeroControllerTest {
   @LocalServerPort
   private int port;
 
-  private String baseUrl = "http://localhost";
+  private String baseUrl = ONE_BASE_URL;
 
   private static RestTemplate restTemplate = null;
 
@@ -56,7 +64,7 @@ class HeroControllerTest {
     final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
 
     credentialsProvider.setCredentials(AuthScope.ANY,
-        new UsernamePasswordCredentials("admin", "admin"));
+        new UsernamePasswordCredentials(USER_DATA, PWD_DATA));
 
     final HttpClient client = HttpClientBuilder
         .create()
@@ -67,21 +75,21 @@ class HeroControllerTest {
 
   @BeforeEach
   public void setUp() {
-    baseUrl = baseUrl.concat(":").concat(port + "").concat("/hero");
+    baseUrl = baseUrl.concat(":").concat(port + "").concat(ONE_HERO_ENDPOINT);
   }
 
   @Test
   void getsAHeroById() {
-    final Hero heroResponse = restTemplate.getForObject(baseUrl.concat("/{id}"), Hero.class, 1);
+    final Hero heroResponse = restTemplate.getForObject(baseUrl.concat(ID_ENDPOINT), Hero.class, 1);
     assertAll(
         () -> assertNotNull(heroResponse),
-        () -> assertEquals("Spiderman", heroResponse.getName())
+        () -> assertEquals(anotherHero().getName(), heroResponse.getName())
     );
   }
 
   @Test
   void findsAHeroByName() {
-    final List<Hero> heroResponse = restTemplate.getForObject(baseUrl.concat("/name/{keywords}"), List.class, "Man");
+    final List<Hero> heroResponse = restTemplate.getForObject(baseUrl.concat(NAME_ENDPOINT), List.class, ONE_KEYWORD);
     assertAll(
         () -> assertNotNull(heroResponse),
         () -> assertEquals(3, heroResponse.size())
@@ -90,7 +98,7 @@ class HeroControllerTest {
 
   @Test
   void createsAHero() {
-    final Hero hero = new Hero("Capitan Garfio", M, "662500221", "Capitan", C);
+    final Hero hero = otherHero();
     final HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     final HttpEntity<Hero> httpEntity = new HttpEntity<>(hero, headers);
@@ -99,20 +107,20 @@ class HeroControllerTest {
     assertAll(
         () -> assertNotNull(heroResponse),
         () -> assertNotNull(heroResponse.getId()),
-        () -> assertEquals("Capitan Garfio", heroResponse.getName()));
+        () -> assertEquals(hero.getName(), heroResponse.getName()));
   }
 
   @Test
   void updatesAHero() {
-    final Hero hero = restTemplate.getForObject(baseUrl.concat("/{id}"), Hero.class, 1);
-    hero.setName("Nuevo Heroe");
+    final Hero hero = restTemplate.getForObject(baseUrl.concat(ID_ENDPOINT), Hero.class, 1);
+    hero.setName(ONE_HERO_NAME);
     final HttpEntity<Hero> entity = new HttpEntity<Hero>(hero);
     final ResponseEntity heroResponse = restTemplate.exchange(baseUrl, HttpMethod.PUT, entity, Hero.class);
     final Hero heroUpdated = (Hero) heroResponse.getBody();
     assertAll(
         () -> assertNotNull(heroUpdated),
         () -> assertNotNull(heroUpdated.getId()),
-        () -> assertEquals("Nuevo Heroe", heroUpdated.getName()));
+        () -> assertEquals(hero.getName(), heroUpdated.getName()));
   }
 
 }

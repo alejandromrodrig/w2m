@@ -7,7 +7,7 @@ import com.example.demo.repository.HeroRepository;
 import com.example.demo.service.HeroService;
 import javax.management.InstanceNotFoundException;
 import javax.xml.bind.ValidationException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -15,11 +15,11 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 @CacheConfig(cacheNames = "hero")
+@AllArgsConstructor
 @Service
 public class HeroServiceImpl implements HeroService {
 
-  @Autowired
-  HeroRepository heroRepository;
+  private final HeroRepository heroRepository;
 
   @Cacheable(value = "allheroescache")
   @Override

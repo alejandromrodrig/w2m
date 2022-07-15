@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import static com.example.demo.HeroMother.ONE_ID;
+import static com.example.demo.HeroMother.ONE_KEYWORD;
+import static com.example.demo.HeroMother.ONE_TELEPHONE;
 import static com.example.demo.HeroMother.oneHero;
 import static com.example.demo.HeroMother.someHeroes;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +46,7 @@ class HeroServiceTest {
   void getsHeroById() throws InstanceNotFoundException {
     givenOneHero();
     final Hero hero = heroServiceImpl.getHeroById(ONE_ID);
-    assertThat(hero.getName()).isEqualTo("Superman");
+    assertThat(hero.getName()).isEqualTo(oneHero().getName());
   }
 
   @Test
@@ -56,7 +58,7 @@ class HeroServiceTest {
   @Test
   void findsHeroByKeywords() {
     givenSomeHeroesFindByName();
-    final List<Hero> heroes = heroServiceImpl.findHeroByKeywords("man");
+    final List<Hero> heroes = heroServiceImpl.findHeroByKeywords(ONE_KEYWORD);
     assertThat(isNotEmpty(heroes));
     assertThat(heroes).hasSize(2);
   }
@@ -64,7 +66,7 @@ class HeroServiceTest {
   @Test
   void searchesHeroByKeywords() {
     givenSomeHeroesSearchHeroByKeywords();
-    final List<Hero> heroes = heroServiceImpl.searchHeroByKeywords("Man");
+    final List<Hero> heroes = heroServiceImpl.searchHeroByKeywords(ONE_KEYWORD);
     assertThat(isNotEmpty(heroes));
     assertThat(heroes).hasSize(2);
   }
@@ -87,7 +89,7 @@ class HeroServiceTest {
   void updatesHero() throws InstanceNotFoundException {
     givenOneHero();
     final Hero heroUpdated = oneHero();
-    heroUpdated.setTelephone("662000000");
+    heroUpdated.setTelephone(ONE_TELEPHONE);
     givenOneHeroSaved(heroUpdated);
     final Hero hero = heroServiceImpl.updateHero(heroUpdated);
     assertThat(hero.getTelephone()).isEqualTo(heroUpdated.getTelephone());

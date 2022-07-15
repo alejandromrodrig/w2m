@@ -1,7 +1,8 @@
 package com.example.demo.repository;
 
-import static com.example.demo.entity.Category.A;
-import static com.example.demo.entity.Gender.M;
+import static com.example.demo.HeroMother.ONE_HERO_NAME;
+import static com.example.demo.HeroMother.anotherHero;
+import static com.example.demo.HeroMother.otherHero;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,7 +31,7 @@ class HeroRepositoryTest {
   @Test
   @Transactional
   void createsHero() {
-    final Hero newHero = new Hero("Hulk", M, "665111111", "", A);
+    final Hero newHero = otherHero();
     final Hero hero = heroRepository.save(newHero);
     final Optional<Hero> heroFromDB = heroRepository.findById(hero.getId());
     assertTrue(heroFromDB.isPresent());
@@ -42,7 +43,7 @@ class HeroRepositoryTest {
   void findsHeroById() {
     final int id = 1;
     final Hero hero = heroRepository.findById(id).get();
-    assertEquals("Nuevo Heroe", hero.getName());
+    assertEquals(anotherHero().getName(), hero.getName());
   }
 
   @Test
@@ -50,7 +51,7 @@ class HeroRepositoryTest {
   void updatesHero() {
     final int id = 1;
     final Hero hero = heroRepository.findById(id).get();
-    hero.setName("Peter Parker");
+    hero.setName(ONE_HERO_NAME);
     heroRepository.save(hero);
     final Hero updatedHero = heroRepository.findById(id).get();
     assertEquals(hero.getName(), updatedHero.getName());
